@@ -45,14 +45,14 @@ typedef enum
   FILELOG_ID
 }logId_et;
 
-#if (LOG_TRACE == ENABLE)   || \
-    (LOG_DEBUG == ENABLE)   || \
-    (LOG_INFO == ENABLE)    || \
-    (LOG_WARNING == ENABLE) || \
-    (LOG_ERROR == ENABLE)   || \
-    (LOG_FATAL == ENABLE)
+#if (_LOG_TRACE == ENABLE)   || \
+    (_LOG_DEBUG == ENABLE)   || \
+    (_LOG_INFO == ENABLE)    || \
+    (_LOG_WARNING == ENABLE) || \
+    (_LOG_ERROR == ENABLE)   || \
+    (_LOG_FATAL == ENABLE)
 
-#define LOG_MODULE_DEFINE( name )  static uint32_t log_module = LOG_MODULE_##name
+#define LOG_MODULE_DEFINE( name )  static uint8_t log_module = LOG_MODULE_##name
 
 #else
 
@@ -61,42 +61,42 @@ typedef enum
 #endif
 
 
-#if LOG_TRACE == ENABLE
+#if _LOG_TRACE == ENABLE
 #define LOG_Trace(msg_event)                                                   \
   (_LOG_BasicFrame(TRACE_ID, msg_event, log_module))
 #else
 #define LOG_Trace(msg_event) ((void)0U)
 #endif
 
-#if LOG_DEBUG == ENABLE
-#define LOG_Debug(msg_event, datatypes, data)                                  \
-  (_LOG_DebugFrame(DEBUG_ID, msg_event, log_module, datatypes, (uint32_t)data))
-#else
-#define LOG_Debug(msg_event, datatypes, data) ((void)0U)
-#endif
-
-#if LOG_ERROR == ENABLE
-#define LOG_Error(msg_event, datatypes, data, condition)                       \
-  ((condition) ? _LOG_DebugFrame(ERROR_ID, msg_event, log_module, datatypes, (uint32_t)data) : 0)
-#else
-#define LOG_Error(msg_event, datatypes, data, condition)   ((void)0U)
-#endif
-
-#if LOG_INFO == ENABLE
+#if _LOG_INFO == ENABLE
 #define LOG_Info(msg_event)                                                    \
   (_LOG_BasicFrame(INFO_ID, msg_event, log_module))
 #else
 #define LOG_Info(msg_event) ((void)0U)
 #endif
 
-#if LOG_WARNING == ENABLE
+#if _LOG_DEBUG == ENABLE
+#define LOG_Debug(msg_event, datatypes, data)                                  \
+  (_LOG_DebugFrame(DEBUG_ID, msg_event, log_module, datatypes, (uint32_t)data))
+#else
+#define LOG_Debug(msg_event, datatypes, data) ((void)0U)
+#endif
+
+#if _LOG_WARNING == ENABLE
 #define LOG_Warning(msg_event, condition)                                      \
   ((condition) ? _LOG_BasicFrame(WARNING_ID, msg_event, log_module) : 0)
 #else
 #define LOG_Warning(msg_event, condition) ((void)0U)
 #endif
 
-#if LOG_WARNING == ENABLE
+#if _LOG_ERROR == ENABLE
+#define LOG_Error(msg_event, datatypes, data, condition)                       \
+  ((condition) ? _LOG_DebugFrame(ERROR_ID, msg_event, log_module, datatypes, (uint32_t)data) : 0)
+#else
+#define LOG_Error(msg_event, datatypes, data, condition)   ((void)0U)
+#endif
+
+#if _LOG_FATAL == ENABLE
 #define LOG_Fatal(msg_event, condition)                                        \
   ((condition) ? _LOG_BasicFrame(FATAL_ID, msg_event, log_module) : 0)
 #else
