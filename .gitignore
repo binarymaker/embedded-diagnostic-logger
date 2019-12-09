@@ -27,3 +27,7 @@
 **/disassembly/
 *.map
 
+### proteuse ###
+*.workspace
+*.pdsbak
+*.pdsbak

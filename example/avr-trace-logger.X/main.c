@@ -33,6 +33,7 @@ main(void)
   MCU_Init();
   while(1)
   {
-    
+    USART_Write('a');
+    DELAY_sec(1);
   }
 }

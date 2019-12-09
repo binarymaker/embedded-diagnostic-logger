@@ -30,10 +30,10 @@
 #define MCU_GPIO_DRIVER                                                  ENABLE 
 #define MCU_EXTERNAL_INTERRUPT_DRIVER                                    DISABLE
 #define MCU_ADC_DRIVER                                                   DISABLE
-#define MCU_USART_DRIVER                                                 DISABLE
+#define MCU_USART_DRIVER                                                 ENABLE
 #define MCU_I2C_DRIVER                                                   DISABLE
 #define MCU_SPI_DRIVER                                                   DISABLE
-#define MCU_TIMER0_DRIVER                                                DISABLE
+#define MCU_TIMER0_DRIVER                                                ENABLE
 #define MCU_TIMER1_DRIVER                                                DISABLE
 #define MCU_TIMER2_DRIVER                                                DISABLE
 
