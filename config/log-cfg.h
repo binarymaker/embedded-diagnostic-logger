@@ -1,4 +1,4 @@
-/**
+/**\cond
   ******************************************************************************
   * ______  _                             ___  ___        _               
   * | ___ \(_)                            |  \/  |       | |              
@@ -16,18 +16,17 @@
   * this distribution.
   * Written by Binary Maker <https://github.com/binarymaker>
   ******************************************************************************
-  */
+  \endcond*/
 
 #ifndef BM_9825f5eb_d9c7_11e9_bc9c_705a0f25cb51
 #define BM_9825f5eb_d9c7_11e9_bc9c_705a0f25cb51
 
-
-#define LOG_TRACE_ENABLE
-#define LOG_DEBUG_ENABLE
-#define LOG_INFO_ENABLE
-#define LOG_WARNING_ENABLE
-#define LOG_ERROR_ENABLE
-#define LOG_FATAL_ENABLE
+#define LOG_TRACE                                                        ENABLE
+#define LOG_DEBUG                                                        ENABLE
+#define LOG_INFO                                                         ENABLE
+#define LOG_WARNING                                                      ENABLE
+#define LOG_ERROR                                                        ENABLE
+#define LOG_FATAL                                                        ENABLE
 
 
 #endif // BM_9825f5eb_d9c7_11e9_bc9c_705a0f25cb51

@@ -93,8 +93,8 @@
         </subordinates>
       </compileType>
       <makeCustomizationType>
-        <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
-        <makeCustomizationPreStep></makeCustomizationPreStep>
+        <makeCustomizationPreStepEnabled>true</makeCustomizationPreStepEnabled>
+        <makeCustomizationPreStep>logger-scan.bat</makeCustomizationPreStep>
         <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
         <makeCustomizationPostStep></makeCustomizationPostStep>
         <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
@@ -172,7 +172,7 @@
       </AVR-GCC>
       <AVR-Global>
         <property key="common-include-directories"
-                  value="..\..\library\avr-atmega-driver\source;..\..\library\embclib\source;..\..\library\embclib\source\stdint;..\..\library\embclib\source\utils;..\..\config;..\..\source;..\..\config\config-avr-atmage-driver;..\..\config\config-embclib;..\..\tools\logger-tool"/>
+                  value=".;..\..\library\avr-atmega-driver\source;..\..\library\embclib\source;..\..\library\embclib\source\stdint;..\..\library\embclib\source\utils;..\..\config;..\..\source;..\..\config\config-avr-atmage-driver;..\..\config\config-embclib"/>
         <property key="eep" value="false"/>
         <property key="external-ram-check" value="false"/>
         <property key="hex" value="true"/>

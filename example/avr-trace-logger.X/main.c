@@ -36,7 +36,8 @@ main(void)
   LOG_Config(USART_Write);
   while(1)
   {
-    LOG_Info(project_start_EVENT);
+    LOG_Info(Pork_EVENT);
+    LOG_Debug(project_start_EVENT, LOG_DATA_8 | LOG_DATA_SIGN, 5);
     DELAY_sec(1);
   }
 }

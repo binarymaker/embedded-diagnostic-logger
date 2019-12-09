@@ -1,0 +1,22 @@
+{
+    "date": "2019-12-09T06:28:08.580163",
+    "device_model": null,
+    "device_submodel": null,
+    "firmware_version": null,
+    "log_strings": [
+        {
+            "fmt_id": 0,
+            "fmt_str": "Pork",
+            "line": 39,
+            "module_id": 0,
+            "module_name": "main"
+        },
+        {
+            "fmt_id": 1,
+            "fmt_str": "project start",
+            "line": 40,
+            "module_id": 0,
+            "module_name": "main"
+        }
+    ]
+}

@@ -1,4 +1,4 @@
-/**
+/**\cond
   ******************************************************************************
   * ______  _                             ___  ___        _               
   * | ___ \(_)                            |  \/  |       | |              
@@ -16,7 +16,7 @@
   * this distribution.
   * Written by Binary Maker <https://github.com/binarymaker>
   ******************************************************************************
-  */
+  \endcond*/
 
 #include "log.h"
 
@@ -29,26 +29,26 @@ LOG_Config(void (*tx_function)(uint8_t))
 }
 
 void
-_LOG_BasicFrame(logId_t log_e, uint8_t msg_event_8u, uint8_t log_module_8u)
+_LOG_BasicFrame(logId_et log_ev, uint8_t msg_event_8u, uint8_t log_module_8u)
 {
-  log_tx_handler(log_e);
+  log_tx_handler(log_ev);
   log_tx_handler(log_module_8u);
   log_tx_handler(msg_event_8u);
 }
 
 void
-_LOG_DebugFrame(logId_t log_e, uint8_t msg_event_8u, uint8_t log_module_8u,
-                uint8_t datatypes_8u, uint32_t data_32u)
+_LOG_DebugFrame(logId_et log_ev, uint8_t msg_event_8u, uint8_t log_module_8u,
+                uint8_t datatypeflag_8u, uint32_t data_32u)
 {
   uint8_t i_8u;
   uint8_t byte_len_8u;
 
-  byte_len_8u = (datatypes_8u & 0x07);
+  byte_len_8u = (datatypeflag_8u & 0x07);
 
-  log_tx_handler(log_e);
+  log_tx_handler(log_ev);
   log_tx_handler(log_module_8u);
   log_tx_handler(msg_event_8u);
-  log_tx_handler(datatypes_8u);
+  log_tx_handler(datatypeflag_8u);
 
   for(i_8u = 0; i_8u < byte_len_8u; i_8u++)
   {

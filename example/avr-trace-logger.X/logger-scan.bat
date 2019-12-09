@@ -1,0 +1,1 @@
+python3 ..\..\tools\logger-tool\generate_log_modules.py ..\..

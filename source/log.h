@@ -1,4 +1,4 @@
-/**
+/**\cond
   ******************************************************************************
   * ______  _                             ___  ___        _               
   * | ___ \(_)                            |  \/  |       | |              
@@ -16,7 +16,7 @@
   * this distribution.
   * Written by Binary Maker <https://github.com/binarymaker>
   ******************************************************************************
-  */
+  \endcond*/
 
 #ifndef BM_97cd7597_d9c7_11e9_8377_705a0f25cb51
 #define BM_97cd7597_d9c7_11e9_8377_705a0f25cb51
@@ -25,104 +25,82 @@
 #include "log-cfg.h"
 #include "log_modules.h"
 
-#define DATA_8        (0x01)
-#define DATA_16       (0x02)
-#define DATA_32       (0x04)
-#define DATA_SIGN     (0x10)
-#define FRMT_FLT      (0x20)
-#define FRMT_CHAR     (0x40)
-#define FRMT_HEX      (0x80)
+#define LOG_DATA_8                                                        (0x01)
+#define LOG_DATA_16                                                       (0x02)
+#define LOG_DATA_32                                                       (0x04)
+#define LOG_DATA_SIGN                                                     (0x10)
+#define LOG_FRMT_FLT                                                      (0x20)
+#define LOG_FRMT_CHAR                                                     (0x40)
+#define LOG_FRMT_HEX                                                      (0x80)
 
 typedef enum
 {
-  TRACE_ID = 0,
+  TRACE_ID,
   DEBUG_ID,
   INFO_ID,
   WARNING_ID,
   ERROR_ID,
-  FATAL_ID
-}logId_t;
+  FATAL_ID,
+  RESTART_ID,
+  FILELOG_ID
+}logId_et;
 
-#if defined(LOG_TRACE_ENABLE)   || \
-    defined(LOG_DEBUG_ENABLE)   || \
-    defined(LOG_INFO_ENABLE)    || \
-    defined(LOG_WARNING_ENABLE) || \
-    defined(LOG_ERROR_ENABLE)   || \
-    defined(LOG_FATAL_ENABLE)
+#if (LOG_TRACE == ENABLE)   || \
+    (LOG_DEBUG == ENABLE)   || \
+    (LOG_INFO == ENABLE)    || \
+    (LOG_WARNING == ENABLE) || \
+    (LOG_ERROR == ENABLE)   || \
+    (LOG_FATAL == ENABLE)
 
-#define LOG_MODULE_DEFINE( _name )  static uint32_t log_module = LOG_MODULE_##_name
+#define LOG_MODULE_DEFINE( name )  static uint32_t log_module = LOG_MODULE_##name
 
 #else
 
-#define LOG_MODULE_DEFINE( _name )
+#define LOG_MODULE_DEFINE( name )
 
 #endif
 
 
-#if defined(LOG_TRACE_ENABLE)
-
-#define LOG_Trace(msg_event)                              \
+#if LOG_TRACE == ENABLE
+#define LOG_Trace(msg_event)                                                   \
   (_LOG_BasicFrame(TRACE_ID, msg_event, log_module))
-
 #else
-
 #define LOG_Trace(msg_event) ((void)0U)
-
 #endif
 
-#if defined(LOG_DEBUG_ENABLE)
-
-#define LOG_Debug(msg_event, datatypes, data)             \
-  (_LOG_DebugFrame(DEBUG_ID, msg_event, log_module, datatypes, data))
-
+#if LOG_DEBUG == ENABLE
+#define LOG_Debug(msg_event, datatypes, data)                                  \
+  (_LOG_DebugFrame(DEBUG_ID, msg_event, log_module, datatypes, (uint32_t)data))
 #else
-
 #define LOG_Debug(msg_event, datatypes, data) ((void)0U)
-
 #endif
 
-#if defined(LOG_ERROR_ENABLE)
-
-#define LOG_Error(msg_event, datatypes, data, condition)  \
-  ((condition) ? _LOG_DebugFrame(ERROR_ID, msg_event, log_module, datatypes, data) : 0)
-
+#if LOG_ERROR == ENABLE
+#define LOG_Error(msg_event, datatypes, data, condition)                       \
+  ((condition) ? _LOG_DebugFrame(ERROR_ID, msg_event, log_module, datatypes, (uint32_t)data) : 0)
 #else
-
 #define LOG_Error(msg_event, datatypes, data, condition)   ((void)0U)
-
 #endif
 
-#if defined(LOG_INFO_ENABLE)
-
-#define LOG_Info(msg_event)                               \
+#if LOG_INFO == ENABLE
+#define LOG_Info(msg_event)                                                    \
   (_LOG_BasicFrame(INFO_ID, msg_event, log_module))
-
 #else
-
 #define LOG_Info(msg_event) ((void)0U)
-
 #endif
 
-#if defined(LOG_WARNING_ENABLE)
-
-#define LOG_Warning(msg_event, condition)                 \
+#if LOG_WARNING == ENABLE
+#define LOG_Warning(msg_event, condition)                                      \
   ((condition) ? _LOG_BasicFrame(WARNING_ID, msg_event, log_module) : 0)
-
 #else
-
 #define LOG_Warning(msg_event, condition) ((void)0U)
-
 #endif
 
-#if defined(LOG_WARNING_ENABLE)
-
-#define LOG_Fatal(msg_event, condition)                   \
+#if LOG_WARNING == ENABLE
+#define LOG_Fatal(msg_event, condition)                                        \
   ((condition) ? _LOG_BasicFrame(FATAL_ID, msg_event, log_module) : 0)
-
 #else
-
 #define LOG_Fatal(msg_event, condition) (void)0U
-
 #endif
 
 
@@ -130,10 +108,10 @@ void
 LOG_Config(void (*tx_function_handler)(uint8_t));
 
 void
-_LOG_BasicFrame(logId_t log_e, uint8_t msg_event_8u, uint8_t log_module_8u);
+_LOG_BasicFrame(logId_et log_ev, uint8_t msg_event_8u, uint8_t log_module_8u);
 
 void
-_LOG_DebugFrame(logId_t log_e, uint8_t msg_event_8u, uint8_t log_module_8u,
-                uint8_t datatypes_8u, uint32_t data_32u);
+_LOG_DebugFrame(logId_et log_ev, uint8_t msg_event_8u, uint8_t log_module_8u,
+                uint8_t datatypeflag_8u, uint32_t data_32u);
 
 #endif /* BM_97cd7597_d9c7_11e9_8377_705a0f25cb51 */
