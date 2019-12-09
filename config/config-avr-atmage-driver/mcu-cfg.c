@@ -293,7 +293,7 @@ TIMER0_Config()
    * Ext T0 falling  -  _H_    |    _H_    |    _L_
    * Ext T0 rising   -  _H_    |    _H_    |    _H_     
    */
-  TCCR0B    =     _L_(CS02)    |    _L_(CS01)    |    _L_(CS00)                ;
+  TCCR0B    =     _L_(CS02)    |    _H_(CS01)    |    _H_(CS00)                ;
   
   /**
    * Timer0 count value --------------------------------------------------------

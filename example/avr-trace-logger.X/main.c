@@ -32,13 +32,16 @@ LOG_MODULE_DEFINE( main );
 int
 main(void)
 {
+  uint8_t count_u8;
   MCU_Init();
+  MCU_INTERRUPT_ENABLE();
   LOG_Config(USART_Write);
   LOG_Restart();
   while(1)
   {
-    LOG_Info(Application_run_EVENT);
-    LOG_Debug(project_start_EVENT, LOG_DATA_8 | LOG_DATA_SIGN, 5);
+    LOG_Trace(Super_loop_EVENT);
+    LOG_Info(Enter_loop_EVENT);
+    LOG_Debug(count_value_EVENT, LOG_DATA_32, SYSTIMER_Millis());
     DELAY_sec(1);
   }
 }
