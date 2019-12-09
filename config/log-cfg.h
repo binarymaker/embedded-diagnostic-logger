@@ -1,4 +1,4 @@
-/**\cond
+/**
   ******************************************************************************
   * ______  _                             ___  ___        _               
   * | ___ \(_)                            |  \/  |       | |              
@@ -16,27 +16,18 @@
   * this distribution.
   * Written by Binary Maker <https://github.com/binarymaker>
   ******************************************************************************
-  \endcond*/
+  */
 
-/* Includes ------------------------------------------------------------------*/
-#include "mcu.h"
-#include "log.h"
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-LOG_MODULE_DEFINE( main );
-/* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
+#ifndef BM_9825f5eb_d9c7_11e9_bc9c_705a0f25cb51
+#define BM_9825f5eb_d9c7_11e9_bc9c_705a0f25cb51
 
-int
-main(void)
-{
-  MCU_Init();
-  LOG_Config(USART_Write);
-  while(1)
-  {
-    LOG_Info(project_start_EVENT);
-    DELAY_sec(1);
-  }
-}
+
+#define LOG_TRACE_ENABLE
+#define LOG_DEBUG_ENABLE
+#define LOG_INFO_ENABLE
+#define LOG_WARNING_ENABLE
+#define LOG_ERROR_ENABLE
+#define LOG_FATAL_ENABLE
+
+
+#endif // BM_9825f5eb_d9c7_11e9_bc9c_705a0f25cb51

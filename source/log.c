@@ -1,4 +1,4 @@
-/**\cond
+/**
   ******************************************************************************
   * ______  _                             ___  ___        _               
   * | ___ \(_)                            |  \/  |       | |              
@@ -16,27 +16,42 @@
   * this distribution.
   * Written by Binary Maker <https://github.com/binarymaker>
   ******************************************************************************
-  \endcond*/
+  */
 
-/* Includes ------------------------------------------------------------------*/
-#include "mcu.h"
 #include "log.h"
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-/* Private macro -------------------------------------------------------------*/
-LOG_MODULE_DEFINE( main );
-/* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
 
-int
-main(void)
+void (*log_tx_handler)(uint8_t);
+
+void
+LOG_Config(void (*tx_function)(uint8_t))
 {
-  MCU_Init();
-  LOG_Config(USART_Write);
-  while(1)
+  log_tx_handler = tx_function;
+}
+
+void
+_LOG_BasicFrame(logId_t log_e, uint8_t msg_event_8u, uint8_t log_module_8u)
+{
+  log_tx_handler(log_e);
+  log_tx_handler(log_module_8u);
+  log_tx_handler(msg_event_8u);
+}
+
+void
+_LOG_DebugFrame(logId_t log_e, uint8_t msg_event_8u, uint8_t log_module_8u,
+                uint8_t datatypes_8u, uint32_t data_32u)
+{
+  uint8_t i_8u;
+  uint8_t byte_len_8u;
+
+  byte_len_8u = (datatypes_8u & 0x07);
+
+  log_tx_handler(log_e);
+  log_tx_handler(log_module_8u);
+  log_tx_handler(msg_event_8u);
+  log_tx_handler(datatypes_8u);
+
+  for(i_8u = 0; i_8u < byte_len_8u; i_8u++)
   {
-    LOG_Info(project_start_EVENT);
-    DELAY_sec(1);
+    log_tx_handler((data_32u >> (i_8u * 8)) & 0x000000FF);
   }
 }

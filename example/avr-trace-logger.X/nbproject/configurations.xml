@@ -44,6 +44,9 @@
         <itemPath>../../library/embclib/source/utils/utils.h</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
+      <itemPath>../../source/log.c</itemPath>
+      <itemPath>../../source/log.h</itemPath>
+      <itemPath>../../config/log-cfg.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -53,10 +56,10 @@
   </logicalFolder>
   <sourceRootList>
     <Elem>../../library/avr-atmega-driver/source</Elem>
-    <Elem>../../config/config-avr-atmage-driver</Elem>
-    <Elem>../../config/config-embclib</Elem>
     <Elem>../../library/embclib/source/utils</Elem>
     <Elem>.</Elem>
+    <Elem>../../source</Elem>
+    <Elem>../../config</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -169,7 +172,7 @@
       </AVR-GCC>
       <AVR-Global>
         <property key="common-include-directories"
-                  value="..\..\source;..\..\library\avr-atmega-driver\source;..\..\library\embclib\source;..\..\library\embclib\source\stdint;..\..\library\embclib\source\utils;..\..\config;..\..\config\config-avr-atmage-driver;..\..\config\config-embclib"/>
+                  value="..\..\library\avr-atmega-driver\source;..\..\library\embclib\source;..\..\library\embclib\source\stdint;..\..\library\embclib\source\utils;..\..\config;..\..\source;..\..\config\config-avr-atmage-driver;..\..\config\config-embclib;..\..\tools\logger-tool"/>
         <property key="eep" value="false"/>
         <property key="external-ram-check" value="false"/>
         <property key="hex" value="true"/>

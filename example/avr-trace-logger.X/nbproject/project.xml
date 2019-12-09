@@ -14,10 +14,10 @@
             <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>../../library/avr-atmega-driver/source</sourceRootElem>
-                <sourceRootElem>../../config/config-avr-atmage-driver</sourceRootElem>
-                <sourceRootElem>../../config/config-embclib</sourceRootElem>
                 <sourceRootElem>../../library/embclib/source/utils</sourceRootElem>
                 <sourceRootElem>.</sourceRootElem>
+                <sourceRootElem>../../source</sourceRootElem>
+                <sourceRootElem>../../config</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
