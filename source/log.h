@@ -103,6 +103,7 @@ typedef enum
 #define LOG_Fatal(msg_event, condition) (void)0U
 #endif
 
+#define LOG_Restart() _LOG_BasicFrame(RESTART_ID, 0, 0)
 
 void
 LOG_Config(void (*tx_function_handler)(uint8_t));

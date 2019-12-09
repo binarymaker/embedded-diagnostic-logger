@@ -30,14 +30,14 @@ import colorama
 
 colorama.init()
 
-log_ids = ["TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"]
+log_ids = ["TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "RESTART"]
 
 timestamp = datetime.datetime
 
 try:
     ser = serial.Serial(
-        port='COM8',\
-        baudrate=115200,\
+        port='COM2',\
+        baudrate=9600,\
         parity=serial.PARITY_NONE,\
         stopbits=serial.STOPBITS_ONE,\
         bytesize=serial.EIGHTBITS,\
@@ -67,19 +67,22 @@ def unsign_to_sign(value, byte_size):
     return value
 
 lasttik = time.perf_counter()
-last_log_time = time.perf_counter()
+start_log_time = time.perf_counter()
 
 data_recevied = False
 data_collect = []
 data_frame = None
 logfile = open(timestamp.now().strftime('./logfiles/logfile_%H_%M_%S_%d_%m_%Y.log'), "w+") 
 
-fmt = '%-9s%-1.3f %-8s%-4s%-6s%-32s'
+fmt = '%-9s%8.3f %-8s%-4s%-6s%-32s'
 data_fmt = '%s%-1s'
 
 def frame_length(byte):
     log_id = byte & 7
     
+    if (log_id == log_ids.index("RESTART")):
+        return 3
+
     if (log_id == log_ids.index("TRACE") or log_id == log_ids.index("INFO") or
         log_id == log_ids.index("WARN") or log_id == log_ids.index("FATAL")):
         return 3
@@ -90,6 +93,10 @@ def frame_length(byte):
 def frame_extra_length(byte):
     data_byte_size = byte & 7
     return data_byte_size
+
+def frame_min_trunk_time(baudrate):
+    delay = 1000/baudrate
+    return (delay * 3.5)
 
 trunk = False
 req_length = 40
@@ -115,26 +122,27 @@ while True:
 
         lasttik = time.perf_counter()
         
-    if (((time.perf_counter() - lasttik) > 0.00175) and (data_recevied == True)) or (trunk == True):
+    if (((time.perf_counter() - lasttik) > (frame_min_trunk_time(ser.baudrate)) and (data_recevied == True)) or (trunk == True)):
         data_recevied = False
         trunk = False
         data_frame = data_collect
         data_collect = []
         
     if data_frame is not None:
-
-        new_log_time = time.perf_counter()  - last_log_time
-        last_log_time = time.perf_counter()
+    
+        mcu_log_time = time.perf_counter() - start_log_time
 
         log_id = data_frame[0] & 7
         log_id_str = log_ids[log_id]
 
         log_time = timestamp.now().strftime("%H:%M:%S")
+        
+        if(log_id == log_ids.index("RESTART")):
+            start_log_time = time.perf_counter()
+        else:
+            module_str, line_no, event_str = json_record(data_frame[1],data_frame[2])
+            log_consol = (log_time, mcu_log_time, module_str, line_no, log_id_str,'--> ' + event_str )
 
-        module_str, line_no, event_str = json_record(data_frame[1],data_frame[2])
-        
-        log_consol = (log_time, new_log_time, module_str, line_no, log_id_str,'--> ' + event_str )
-        
         if (log_id == log_ids.index("TRACE") or log_id == log_ids.index("INFO") or
             log_id == log_ids.index("WARN") or log_id == log_ids.index("FATAL")):
             

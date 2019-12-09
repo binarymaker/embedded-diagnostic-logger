@@ -1,13 +1,20 @@
 {
-    "date": "2019-12-09T05:06:55.799967",
+    "date": "2019-12-09T08:33:13.841166",
     "device_model": null,
     "device_submodel": null,
     "firmware_version": null,
     "log_strings": [
         {
             "fmt_id": 0,
+            "fmt_str": "Application run",
+            "line": 40,
+            "module_id": 0,
+            "module_name": "main"
+        },
+        {
+            "fmt_id": 1,
             "fmt_str": "project start",
-            "line": 39,
+            "line": 41,
             "module_id": 0,
             "module_name": "main"
         }

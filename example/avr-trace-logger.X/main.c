@@ -34,6 +34,7 @@ main(void)
 {
   MCU_Init();
   LOG_Config(USART_Write);
+  LOG_Restart();
   while(1)
   {
     LOG_Info(Application_run_EVENT);
