@@ -84,6 +84,7 @@ def parse_module(filename):
                     parser_error(filename, line_num, "Module regex error")
 
                 module['name'] = m.groups()[0].strip()
+                module['name'] = module['name'].replace('_','-')
                 if module['name'] != expected_name:
                     parser_error(filename, line_num, "Expected module '%s' but got '%s'" % (expected_name, module['name'], filename))
 
