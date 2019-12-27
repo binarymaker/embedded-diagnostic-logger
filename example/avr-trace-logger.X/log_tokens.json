@@ -1,0 +1,36 @@
+{
+    "date": "2019-12-27T04:13:33.430494",
+    "device_model": null,
+    "device_submodel": null,
+    "firmware_version": null,
+    "log_strings": [
+        {
+            "fmt_id": 0,
+            "fmt_str": "ADC function",
+            "line": 36,
+            "module_id": 0,
+            "module_name": "adc"
+        },
+        {
+            "fmt_id": 0,
+            "fmt_str": "Super loop",
+            "line": 42,
+            "module_id": 1,
+            "module_name": "main"
+        },
+        {
+            "fmt_id": 1,
+            "fmt_str": "Enter loop",
+            "line": 43,
+            "module_id": 1,
+            "module_name": "main"
+        },
+        {
+            "fmt_id": 2,
+            "fmt_str": "count value",
+            "line": 44,
+            "module_id": 1,
+            "module_name": "main"
+        }
+    ]
+}

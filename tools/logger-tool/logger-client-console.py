@@ -52,7 +52,7 @@ except:
 
 print("connected to: " + ser.portstr)
 
-with open('log_strings.json') as f:
+with open('log_tokens.json') as f:
     module_record = json.load(f)
 
 def json_record(module_id, event_id):

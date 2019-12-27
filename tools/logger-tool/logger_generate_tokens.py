@@ -206,7 +206,7 @@ if __name__ == "__main__":
     parser = OptionParser("usage: %prog [OPTIONS] <search path>")
     parser.add_option("--header",    dest="headerFilename", help="write generated log modules header to FILE", metavar="FILE", default="log_modules.h")
     parser.add_option("--fwVersion", dest="fwVersion",      help="firmware version string")
-    parser.add_option("--json",      dest="jsonFilename",   help="write generated log strings JSON to FILE", metavar="FILE", default="log_strings.json")
+    parser.add_option("--json",      dest="jsonFilename",   help="write generated log strings JSON to FILE", metavar="FILE", default="log_tokens.json")
     parser.add_option("--model",     dest="deviceModel",    help="device model")
     parser.add_option("--submodel",  dest="deviceSubmodel", help="device sub-model")
 
