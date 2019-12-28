@@ -105,7 +105,7 @@ log_buffer_write(uint8_t ch)
 void
 log_buffer_clear()
 {
-  for (int8_t i_8u = 0; i_8u < BUFFER_SIZE; i_8u++)
+  for (uint8_t i_8u = 0; i_8u < BUFFER_SIZE; i_8u++)
   {
     log_buffer[i_8u] = 0;
   }
@@ -120,9 +120,10 @@ test_logger_core_function__LOG_BasicFrame()
     #define logger_1_EVENT    1
     LOG_MODULE_DEFINE(binary);
     
+    LOG_Config(log_buffer_write);
     log_buffer_clear();
     /* Setup expected function mock */
-    LOG_Config(log_buffer_write);
+    
 
     /* Function under test */
     _LOG_BasicFrame(TRACE_ID, logger_1_EVENT, log_module);
@@ -141,9 +142,10 @@ test_logger_core_function__LOG_DebugFrame()
     #define logger_1_EVENT    1
     LOG_MODULE_DEFINE(binary);
     
+    LOG_Config(log_buffer_write);
     log_buffer_clear();
     /* Setup expected function mock */
-    LOG_Config(log_buffer_write);
+    
 
     /* Function under test */
     _LOG_DebugFrame(DEBUG_ID, logger_1_EVENT, log_module, LOG_DATA_32, 0x0BADF00D);
@@ -162,9 +164,10 @@ test_logger_LOG_Trace()
     #define logger_1_EVENT    1
     LOG_MODULE_DEFINE(binary);
     
+    LOG_Config(log_buffer_write);
     log_buffer_clear();
     /* Setup expected function mock */
-    LOG_Config(log_buffer_write);
+    
 
     /* Function under test */
     LOG_Trace(logger_1_EVENT);
@@ -183,9 +186,9 @@ test_logger_LOG_Info()
     #define logger_1_EVENT    1
     LOG_MODULE_DEFINE(binary);
     
+    LOG_Config(log_buffer_write);
     log_buffer_clear();
     /* Setup expected function mock */
-    LOG_Config(log_buffer_write);
 
     /* Function under test */
     LOG_Info(logger_1_EVENT);
@@ -204,9 +207,9 @@ test_logger_LOG_Debug()
     #define logger_1_EVENT    1
     LOG_MODULE_DEFINE(binary);
     
+    LOG_Config(log_buffer_write);
     log_buffer_clear();
     /* Setup expected function mock */
-    LOG_Config(log_buffer_write);
 
     /* Function under test */
     LOG_Debug(logger_1_EVENT, LOG_DATA_SIGN | LOG_DATA_16, 0xF00D);
@@ -225,9 +228,10 @@ test_logger_LOG_Warning()
     #define logger_1_EVENT    1
     LOG_MODULE_DEFINE(binary);
     
+    LOG_Config(log_buffer_write);
     log_buffer_clear();
     /* Setup expected function mock */
-    LOG_Config(log_buffer_write);
+    
 
     /* Function under test */
     LOG_Warning(logger_1_EVENT, 100 > 10);
@@ -246,9 +250,9 @@ test_logger_LOG_Error()
     #define logger_1_EVENT    1
     LOG_MODULE_DEFINE(binary);
     
+    LOG_Config(log_buffer_write);
     log_buffer_clear();
     /* Setup expected function mock */
-    LOG_Config(log_buffer_write);
 
     /* Function under test */
     LOG_Error(logger_1_EVENT, LOG_DATA_8, 10, 100 > 10);
@@ -267,9 +271,9 @@ test_logger_LOG_Fatal()
     #define logger_1_EVENT    1
     LOG_MODULE_DEFINE(binary);
     
+    LOG_Config(log_buffer_write);
     log_buffer_clear();
     /* Setup expected function mock */
-    LOG_Config(log_buffer_write);
 
     /* Function under test */
     LOG_Fatal(logger_1_EVENT, 100 > 10);
@@ -284,10 +288,10 @@ void
 test_logger_LOG_Restart()
 {
     /* Ensure known test state */
-    log_buffer_clear();
-    
-    /* Setup expected function mock */
     LOG_Config(log_buffer_write);
+    log_buffer_clear();
+
+    /* Setup expected function mock */
 
     /* Function under test */
     LOG_Restart();
