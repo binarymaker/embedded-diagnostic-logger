@@ -32,6 +32,6 @@
 *.pdsbak
 *.pdsbak
 
-example/avr-trace-logger.X/log_strings.json
-example/avr-trace-logger.X/log_modules.h
-tools/logger-tool/log_strings.json
+### log tool files ###
+**/log_modules.h
+**/log_tokens.json
