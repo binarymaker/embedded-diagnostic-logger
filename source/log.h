@@ -23,7 +23,10 @@
 
 #include <stdint.h>
 #include "log-cfg.h"
+
+#ifndef TEST
 #include "log_modules.h"
+#endif
 
 #define LOG_DATA_8                                                        (0x01)
 #define LOG_DATA_16                                                       (0x02)

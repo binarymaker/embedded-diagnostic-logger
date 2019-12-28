@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "*.log": "log",
-    "mcu.h": "c"
+    "mcu.h": "c",
+    "log.h": "c"
   }
 }
