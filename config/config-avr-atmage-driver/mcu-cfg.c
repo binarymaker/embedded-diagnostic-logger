@@ -199,9 +199,21 @@ USART_Config()
 {
   /**
    * Baud rate register value --------------------------------------------------
+   * 
+   * use USART_BAUD_REG_CALC() for normal speed
+   * use USART_BAUD_REG_2X_CALC for 2x speed
    */
   UBRR0     =    USART_BAUD_REG_CALC(9600UL)                                   ;
-
+  
+  /**
+   * Baud rate speed increase by 2
+   * 
+   *            U2X0
+   * Enable  -  _H_ 
+   * Disable -  _L_ 
+   */
+  UCSR0A    =    _L_(U2X0)                                                     ;
+  
   /**
    * USART transmit and receive activation -------------------------------------
    * 

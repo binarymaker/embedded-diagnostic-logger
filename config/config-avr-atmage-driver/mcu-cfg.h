@@ -25,7 +25,7 @@
  extern "C" {
 #endif
 
-#define F_CPU                                                        (8000000UL)
+#define F_CPU                                                       (16000000UL)
 
 #define MCU_GPIO_DRIVER                                                  ENABLE 
 #define MCU_EXTERNAL_INTERRUPT_DRIVER                                    DISABLE
@@ -41,7 +41,10 @@
 
 /* ############################# SYSTIMER DRIVER ############################ */
 
-#define MICROSECONDS_PER_SYSTIMER_OVERFLOW                               (2000U)
+#define SYSTIMER_PRESCALLER                                                (64U)
+#define SYSTIMER_MAX_COUNT                                                (256U)
+#define MICROSECONDS_PER_SYSTIMER_OVERFLOW                                     \
+           CLOCK_CYCLE_TO_MICROSECONDS(SYSTIMER_PRESCALLER * SYSTIMER_MAX_COUNT)
 
 /* ############################### GPIO DRIVER ############################## */
 
