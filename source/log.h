@@ -112,10 +112,10 @@ void
 LOG_Config(void (*tx_function_handler)(uint8_t));
 
 void
-LOG_BasicFrame(logId_et log_ev, uint8_t msg_event_u8, uint8_t log_module_u8);
+LOG_BasicFrame(logId_et log_ev, uint8_t log_module_u8, uint8_t msg_event_u8);
 
 void
-LOG_DebugFrame(logId_et log_ev, uint8_t msg_event_u8, uint8_t log_module_u8,
-                uint8_t datatypeflag_u8, uint32_t data_32u);
+LOG_DebugFrame(logId_et log_ev, uint8_t log_module_u8, uint8_t msg_event_u8,
+            uint8_t datatypeflag_u8, uint8_t length_u8, const void * data_ptr);
 
 #endif /* BM_97cd7597_d9c7_11e9_8377_705a0f25cb51 */
