@@ -185,36 +185,36 @@ test_logger_core_function_LOG_DebugFrame_multi_length()
                                 sizeof(expected_transfer));
 }
 
-#ifdef hide
+
 void
-test_loggerLOG_Trace()
+test_logger_LOG_Trace()
 {
-    /* Ensure known test state */
-    uint8_t LOG_MODULE_binary = 0xA5;
-    uint8_t Logger_EVENT      = 0x01;
-    LOG_MODULE_DEFINE(binary);
-    
-    LOG_Config(log_buffer_write);
-    log_buffer_clear();
-    /* Setup expected function mock */
-    
+  /* Ensure known test state */
+  uint8_t LOG_MODULE_binary = 0xA5;
+  uint8_t Logger_EVENT      = 0x01;
+  uint8_t log_module        = LOG_MODULE_binary;
+  
+  LOG_Config(log_buffer_write);
+  log_buffer_clear();
+  /* Setup expected function mock */
+  
 
-    /* Function under test */
-    LOG_Trace(Logger_EVENT);
+  /* Function under test */
+  LOG_Trace(Logger_EVENT);
 
-    /* Verify test results */
-    uint8_t expected_transfer[] = {0, 100, 1};
-    TEST_ASSERT_EQUAL_INT8_ARRAY(expected_transfer, log_buffer, 
-                                  sizeof(expected_transfer));
+  /* Verify test results */
+  uint8_t expected_transfer[] = {'#', 0x00, 0xA5, 0x01, 0x5E, '\n'};
+  TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_transfer, log_buffer, 
+                                sizeof(expected_transfer));
 }
 
 void
-test_loggerLOG_Info()
+test_logger_LOG_Info()
 {
     /* Ensure known test state */
     uint8_t LOG_MODULE_binary = 0xA5;
     uint8_t Logger_EVENT      = 0x01;
-    LOG_MODULE_DEFINE(binary);
+    uint8_t log_module        = LOG_MODULE_binary;
     
     LOG_Config(log_buffer_write);
     log_buffer_clear();
@@ -224,39 +224,41 @@ test_loggerLOG_Info()
     LOG_Info(Logger_EVENT);
 
     /* Verify test results */
-    uint8_t expected_transfer[] = {2, 100, 1};
-    TEST_ASSERT_EQUAL_INT8_ARRAY(expected_transfer, log_buffer, 
+    uint8_t expected_transfer[] = {'#', 0x02, 0xA5, 0x01, 0x88, '\n'};
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_transfer, log_buffer, 
                                   sizeof(expected_transfer));
 }
 
 void
-test_loggerLOG_Debug()
+test_logger_LOG_Debug()
 {
     /* Ensure known test state */
     uint8_t LOG_MODULE_binary = 0xA5;
     uint8_t Logger_EVENT      = 0x01;
-    LOG_MODULE_DEFINE(binary);
+    uint8_t log_module        = LOG_MODULE_binary;
     
+    int16_t data_i16 = 0xF00D;
+
     LOG_Config(log_buffer_write);
     log_buffer_clear();
     /* Setup expected function mock */
 
     /* Function under test */
-    LOG_Debug(Logger_EVENT, LOG_DATA_SIGN | LOG_DATA_16, 0xF00D);
+    LOG_Debug(Logger_EVENT, LOG_DATA_SIGN | LOG_DATA_16, &data_i16);
 
     /* Verify test results */
-    uint8_t expected_transfer[] = {1, 100, 1, 0x12, 0x0D, 0xF0};
-    TEST_ASSERT_EQUAL_INT8_ARRAY(expected_transfer, log_buffer, 
+    uint8_t expected_transfer[] = {'#', 0x01, 0xA5, 0x01, 0x12 ,0x01, 0x0D, 0xF0 ,0xF0, '\n'};
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_transfer, log_buffer, 
                                   sizeof(expected_transfer));
 }
 
 void
-test_loggerLOG_Warning()
+test_logger_LOG_Warning()
 {
     /* Ensure known test state */
     uint8_t LOG_MODULE_binary = 0xA5;
     uint8_t Logger_EVENT      = 0x01;
-    LOG_MODULE_DEFINE(binary);
+    uint8_t log_module        = LOG_MODULE_binary;
     
     LOG_Config(log_buffer_write);
     log_buffer_clear();
@@ -267,39 +269,39 @@ test_loggerLOG_Warning()
     LOG_Warning(Logger_EVENT, 100 > 10);
 
     /* Verify test results */
-    uint8_t expected_transfer[] = {3, 100, 1};
-    TEST_ASSERT_EQUAL_INT8_ARRAY(expected_transfer, log_buffer, 
+    uint8_t expected_transfer[] = {'#', 0x03, 0xA5, 0x01, 0xE3, '\n'};
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_transfer, log_buffer, 
                                   sizeof(expected_transfer));
 }
 
 void
-test_loggerLOG_Error()
+test_logger_LOG_Error()
 {
     /* Ensure known test state */
     uint8_t LOG_MODULE_binary = 0xA5;
     uint8_t Logger_EVENT      = 0x01;
-    LOG_MODULE_DEFINE(binary);
-    
+    uint8_t log_module        = LOG_MODULE_binary;
+    uint8_t data_u8 = 0x10;
     LOG_Config(log_buffer_write);
     log_buffer_clear();
     /* Setup expected function mock */
 
     /* Function under test */
-    LOG_Error(Logger_EVENT, LOG_DATA_8, 10, 100 > 10);
+    LOG_Error(Logger_EVENT, LOG_DATA_8, &data_u8, 100 > 10);
 
     /* Verify test results */
-    uint8_t expected_transfer[] = {4, 100, 1, 0x01, 10};
-    TEST_ASSERT_EQUAL_INT8_ARRAY(expected_transfer, log_buffer, 
+    uint8_t expected_transfer[] = {'#', 0x04, 0xA5, 0x01, 0x01 ,0x01, 0x10, 0xA2, '\n'};
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_transfer, log_buffer, 
                                   sizeof(expected_transfer));
 }
 
 void
-test_loggerLOG_Fatal()
+test_logger_LOG_Fatal()
 {
     /* Ensure known test state */
     uint8_t LOG_MODULE_binary = 0xA5;
     uint8_t Logger_EVENT      = 0x01;
-    LOG_MODULE_DEFINE(binary);
+    uint8_t log_module        = LOG_MODULE_binary;
     
     LOG_Config(log_buffer_write);
     log_buffer_clear();
@@ -309,13 +311,13 @@ test_loggerLOG_Fatal()
     LOG_Fatal(Logger_EVENT, 100 > 10);
 
     /* Verify test results */
-    uint8_t expected_transfer[] = {5, 100, 1};
-    TEST_ASSERT_EQUAL_INT8_ARRAY(expected_transfer, log_buffer, 
+    uint8_t expected_transfer[] = {'#', 0x05, 0xA5, 0x01, 0x9E, '\n'};
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_transfer, log_buffer, 
                                   sizeof(expected_transfer));
 }
 
 void
-test_loggerLOG_Restart()
+test_logger_LOG_Restart()
 {
     /* Ensure known test state */
     LOG_Config(log_buffer_write);
@@ -327,9 +329,7 @@ test_loggerLOG_Restart()
     LOG_Restart();
 
     /* Verify test results */
-    uint8_t expected_transfer[] = {6, 0, 0};
-    TEST_ASSERT_EQUAL_INT8_ARRAY(expected_transfer, log_buffer, 
+    uint8_t expected_transfer[] = {'#', 0x06, 0x00, 0x00, 0x7D, '\n'};
+    TEST_ASSERT_EQUAL_HEX8_ARRAY(expected_transfer, log_buffer, 
                                   sizeof(expected_transfer));
 }
-
-#endif // hide

@@ -21,12 +21,12 @@
 #ifndef BM_9825f5eb_d9c7_11e9_bc9c_705a0f25cb51
 #define BM_9825f5eb_d9c7_11e9_bc9c_705a0f25cb51
 
-#define LOG_TRACE                                                       DISABLE
-#define LOG_INFO                                                        DISABLE
-#define LOG_DEBUG                                                       DISABLE
-#define LOG_WARNING                                                     DISABLE
-#define LOG_ERROR                                                       DISABLE
-#define LOG_FATAL                                                       DISABLE
+#define LOG_TRACE                                                       ENABLE
+#define LOG_INFO                                                        ENABLE
+#define LOG_DEBUG                                                       ENABLE
+#define LOG_WARNING                                                     ENABLE
+#define LOG_ERROR                                                       ENABLE
+#define LOG_FATAL                                                       ENABLE
 
 
 #endif // BM_9825f5eb_d9c7_11e9_bc9c_705a0f25cb51
