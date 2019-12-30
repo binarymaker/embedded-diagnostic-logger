@@ -48,12 +48,12 @@ typedef enum
   FILELOG_ID
 }logId_et;
 
-#if (_LOG_TRACE == ENABLE)   || \
-    (_LOG_DEBUG == ENABLE)   || \
-    (_LOG_INFO == ENABLE)    || \
-    (_LOG_WARNING == ENABLE) || \
-    (_LOG_ERROR == ENABLE)   || \
-    (_LOG_FATAL == ENABLE)
+#if (LOG_TRACE == ENABLE)   || \
+    (LOG_DEBUG == ENABLE)   || \
+    (LOG_INFO == ENABLE)    || \
+    (LOG_WARNING == ENABLE) || \
+    (LOG_ERROR == ENABLE)   || \
+    (LOG_FATAL == ENABLE)
 
 #define LOG_MODULE_DEFINE( name )  static uint8_t log_module = LOG_MODULE_##name
 
@@ -64,58 +64,58 @@ typedef enum
 #endif
 
 
-#if _LOG_TRACE == ENABLE
+#if LOG_TRACE == ENABLE
 #define LOG_Trace(msg_event)                                                   \
-  (_LOG_BasicFrame(TRACE_ID, msg_event, log_module))
+  (LOG_BasicFrame(TRACE_ID, msg_event, log_module))
 #else
 #define LOG_Trace(msg_event) ((void)0U)
 #endif
 
-#if _LOG_INFO == ENABLE
+#if LOG_INFO == ENABLE
 #define LOG_Info(msg_event)                                                    \
-  (_LOG_BasicFrame(INFO_ID, msg_event, log_module))
+  (LOG_BasicFrame(INFO_ID, msg_event, log_module))
 #else
 #define LOG_Info(msg_event) ((void)0U)
 #endif
 
-#if _LOG_DEBUG == ENABLE
+#if LOG_DEBUG == ENABLE
 #define LOG_Debug(msg_event, datatypes, data)                                  \
-  (_LOG_DebugFrame(DEBUG_ID, msg_event, log_module, datatypes, (uint32_t)data))
+  (LOG_DebugFrame(DEBUG_ID, msg_event, log_module, datatypes, (uint32_t)data))
 #else
 #define LOG_Debug(msg_event, datatypes, data) ((void)0U)
 #endif
 
-#if _LOG_WARNING == ENABLE
+#if LOG_WARNING == ENABLE
 #define LOG_Warning(msg_event, condition)                                      \
-  ((condition) ? _LOG_BasicFrame(WARNING_ID, msg_event, log_module) : 0)
+  ((condition) ? LOG_BasicFrame(WARNING_ID, msg_event, log_module) : 0)
 #else
 #define LOG_Warning(msg_event, condition) ((void)0U)
 #endif
 
-#if _LOG_ERROR == ENABLE
+#if LOG_ERROR == ENABLE
 #define LOG_Error(msg_event, datatypes, data, condition)                       \
-  ((condition) ? _LOG_DebugFrame(ERROR_ID, msg_event, log_module, datatypes, (uint32_t)data) : 0)
+  ((condition) ? LOG_DebugFrame(ERROR_ID, msg_event, log_module, datatypes, (uint32_t)data) : 0)
 #else
 #define LOG_Error(msg_event, datatypes, data, condition)   ((void)0U)
 #endif
 
-#if _LOG_FATAL == ENABLE
+#if LOG_FATAL == ENABLE
 #define LOG_Fatal(msg_event, condition)                                        \
-  ((condition) ? _LOG_BasicFrame(FATAL_ID, msg_event, log_module) : 0)
+  ((condition) ? LOG_BasicFrame(FATAL_ID, msg_event, log_module) : 0)
 #else
 #define LOG_Fatal(msg_event, condition) (void)0U
 #endif
 
-#define LOG_Restart() _LOG_BasicFrame(RESTART_ID, 0, 0)
+#define LOG_Restart() LOG_BasicFrame(RESTART_ID, 0, 0)
 
 void
 LOG_Config(void (*tx_function_handler)(uint8_t));
 
 void
-_LOG_BasicFrame(logId_et log_ev, uint8_t msg_event_8u, uint8_t log_module_8u);
+LOG_BasicFrame(logId_et log_ev, uint8_t msg_event_u8, uint8_t log_module_u8);
 
 void
-_LOG_DebugFrame(logId_et log_ev, uint8_t msg_event_8u, uint8_t log_module_8u,
-                uint8_t datatypeflag_8u, uint32_t data_32u);
+LOG_DebugFrame(logId_et log_ev, uint8_t msg_event_u8, uint8_t log_module_u8,
+                uint8_t datatypeflag_u8, uint32_t data_32u);
 
 #endif /* BM_97cd7597_d9c7_11e9_8377_705a0f25cb51 */

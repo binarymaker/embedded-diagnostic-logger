@@ -92,28 +92,28 @@ test_module_name_define_variable_should_create()
 #define BUFFER_SIZE 32
 
 uint8_t log_buffer[BUFFER_SIZE];
-uint8_t buffer_index_8u;
+uint8_t buffer_index_u8;
 
 void
 log_buffer_write(uint8_t ch)
 {
-  buffer_index_8u %= BUFFER_SIZE;
-  log_buffer[buffer_index_8u] = ch;
-  buffer_index_8u++;
+  buffer_index_u8 %= BUFFER_SIZE;
+  log_buffer[buffer_index_u8] = ch;
+  buffer_index_u8++;
 }
 
 void
 log_buffer_clear()
 {
-  for (uint8_t i_8u = 0; i_8u < BUFFER_SIZE; i_8u++)
+  for (uint8_t i_u8 = 0; i_u8 < BUFFER_SIZE; i_u8++)
   {
-    log_buffer[i_8u] = 0;
+    log_buffer[i_u8] = 0;
   }
-  buffer_index_8u = 0;
+  buffer_index_u8 = 0;
 }
 
 void
-test_logger_core_function__LOG_BasicFrame()
+test_logger_core_function_LOG_BasicFrame()
 {
     /* Ensure known test state */
     #define LOG_MODULE_binary 100
@@ -126,7 +126,7 @@ test_logger_core_function__LOG_BasicFrame()
     
 
     /* Function under test */
-    _LOG_BasicFrame(TRACE_ID, logger_1_EVENT, log_module);
+    LOG_BasicFrame(TRACE_ID, logger_1_EVENT, log_module);
 
     /* Verify test results */
     uint8_t expected_transfer[] = {0, 100, 1};
@@ -135,7 +135,7 @@ test_logger_core_function__LOG_BasicFrame()
 }
 
 void
-test_logger_core_function__LOG_DebugFrame()
+test_logger_core_function_LOG_DebugFrame()
 {
     /* Ensure known test state */
     #define LOG_MODULE_binary 100
@@ -148,7 +148,7 @@ test_logger_core_function__LOG_DebugFrame()
     
 
     /* Function under test */
-    _LOG_DebugFrame(DEBUG_ID, logger_1_EVENT, log_module, LOG_DATA_32, 0x0BADF00D);
+    LOG_DebugFrame(DEBUG_ID, logger_1_EVENT, log_module, LOG_DATA_32, 0x0BADF00D);
 
     /* Verify test results */
     uint8_t expected_transfer[] = {1, 100, 1, 4, 0x0D, 0xF0, 0xAD, 0X0B};
@@ -157,7 +157,7 @@ test_logger_core_function__LOG_DebugFrame()
 }
 
 void
-test_logger_LOG_Trace()
+test_loggerLOG_Trace()
 {
     /* Ensure known test state */
     #define LOG_MODULE_binary 100
@@ -179,7 +179,7 @@ test_logger_LOG_Trace()
 }
 
 void
-test_logger_LOG_Info()
+test_loggerLOG_Info()
 {
     /* Ensure known test state */
     #define LOG_MODULE_binary 100
@@ -200,7 +200,7 @@ test_logger_LOG_Info()
 }
 
 void
-test_logger_LOG_Debug()
+test_loggerLOG_Debug()
 {
     /* Ensure known test state */
     #define LOG_MODULE_binary 100
@@ -221,7 +221,7 @@ test_logger_LOG_Debug()
 }
 
 void
-test_logger_LOG_Warning()
+test_loggerLOG_Warning()
 {
     /* Ensure known test state */
     #define LOG_MODULE_binary 100
@@ -243,7 +243,7 @@ test_logger_LOG_Warning()
 }
 
 void
-test_logger_LOG_Error()
+test_loggerLOG_Error()
 {
     /* Ensure known test state */
     #define LOG_MODULE_binary 100
@@ -264,7 +264,7 @@ test_logger_LOG_Error()
 }
 
 void
-test_logger_LOG_Fatal()
+test_loggerLOG_Fatal()
 {
     /* Ensure known test state */
     #define LOG_MODULE_binary 100
@@ -285,7 +285,7 @@ test_logger_LOG_Fatal()
 }
 
 void
-test_logger_LOG_Restart()
+test_loggerLOG_Restart()
 {
     /* Ensure known test state */
     LOG_Config(log_buffer_write);

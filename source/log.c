@@ -29,29 +29,29 @@ LOG_Config(void (*tx_function)(uint8_t))
 }
 
 void
-_LOG_BasicFrame(logId_et log_ev, uint8_t msg_event_8u, uint8_t log_module_8u)
+LOG_BasicFrame(logId_et log_ev, uint8_t msg_event_u8, uint8_t log_module_u8)
 {
   log_tx_handler(log_ev);
-  log_tx_handler(log_module_8u);
-  log_tx_handler(msg_event_8u);
+  log_tx_handler(log_module_u8);
+  log_tx_handler(msg_event_u8);
 }
 
 void
-_LOG_DebugFrame(logId_et log_ev, uint8_t msg_event_8u, uint8_t log_module_8u,
-                uint8_t datatypeflag_8u, uint32_t data_32u)
+LOG_DebugFrame(logId_et log_ev, uint8_t msg_event_u8, uint8_t log_module_u8,
+                uint8_t datatypeflag_u8, uint32_t data_32u)
 {
-  uint8_t i_8u;
-  uint8_t byte_len_8u;
+  uint8_t i_u8;
+  uint8_t byte_len_u8;
 
-  byte_len_8u = (datatypeflag_8u & 0x07);
+  byte_len_u8 = (datatypeflag_u8 & 0x07);
 
   log_tx_handler(log_ev);
-  log_tx_handler(log_module_8u);
-  log_tx_handler(msg_event_8u);
-  log_tx_handler(datatypeflag_8u);
+  log_tx_handler(log_module_u8);
+  log_tx_handler(msg_event_u8);
+  log_tx_handler(datatypeflag_u8);
 
-  for(i_8u = 0; i_8u < byte_len_8u; i_8u++)
+  for(i_u8 = 0; i_u8 < byte_len_u8; i_u8++)
   {
-    log_tx_handler((data_32u >> (i_8u * 8)) & 0x000000FF);
+    log_tx_handler((data_32u >> (i_u8 * 8)) & 0x000000FF);
   }
 }
