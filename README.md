@@ -54,13 +54,25 @@ output in logger-client-console.py application
 10:54:41    0.015 main    17  WARN  --> Application Warning message
 ```
 
-Actual data transfer from micrcontroller to client app
+Actual data transfer from micrcontroller to client app per function
+
+LOG_Restart()
 ```
-0x24 0x06 0x00 0x00 0x00 -> for LOG_Restart()
-0x24 0x00 0x00 0x00 0x00 -> for LOG_Trace(Application_Trace_message_EVENT);
-0x24 0x01 0x00 0x01 0x6B -> for LOG_Info(Application_Info_massage_EVENT);
-0x24 0x02 0x00 0x02 0x02 0x01 0x64 0x00 0xB9 -> 
- for LOG_Debug(Application_debug_message_EVENT, LOG_DATA_16, &debug_data_xyz_u16);
-0x24 0x03 0x00 0x03 0xB4 -> 
- for LOG_Warning(Application_Warning_message_EVENT, debug_data_xyz_u16 > 10u);
+0x24 0x06 0x00 0x00 0x00
+```
+LOG_Trace(Application_Trace_message_EVENT);
+```
+0x24 0x00 0x00 0x00 0x00
+```
+LOG_Info(Application_Info_massage_EVENT);
+```
+0x24 0x01 0x00 0x01 0x6B 
+```
+LOG_Debug(Application_debug_message_EVENT, LOG_DATA_16, &debug_data_xyz_u16);
+```
+0x24 0x02 0x00 0x02 0x02 0x01 0x64 0x00 0xB9
+```
+LOG_Warning(Application_Warning_message_EVENT, debug_data_xyz_u16 > 10u);
+```
+0x24 0x03 0x00 0x03 0xB4
 ```
