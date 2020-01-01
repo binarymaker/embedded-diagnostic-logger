@@ -22,7 +22,6 @@
 #include "crc8-ccitt.h"
 
 #define LOG_START_ID                                              ((uint8_t)'#')
-#define LOG_END_ID                                               ((uint8_t)'\n')
 
 void (*log_tx_handler)(uint8_t);
 
@@ -45,7 +44,6 @@ LOG_BasicFrame(logId_et log_ev, uint8_t log_module_u8, uint8_t msg_event_u8)
   log_tx_handler(log_module_u8);
   log_tx_handler(msg_event_u8);
   log_tx_handler(crc_u8);
-  log_tx_handler(LOG_END_ID);
 }
 
 void
@@ -77,5 +75,4 @@ LOG_DebugFrame(logId_et log_ev, uint8_t log_module_u8, uint8_t msg_event_u8,
   }
 
   log_tx_handler(crc_u8);
-  log_tx_handler(LOG_END_ID);
 }
