@@ -93,7 +93,10 @@ class frame:
             else:
                 self.debug_data = []
         else:
-            print("CRC ERROR")
+            self.event_log_level = "CRC"
+            self.event_module = "*****"
+            self.event_line = "**"
+            self.event_string = "***** CRC Failed *****"
 
     def debug_data_extract(self,frame):
         data_bytes = frame[self.DATATYPE] & 0x07
@@ -107,7 +110,7 @@ class frame:
         return (data_array)
 
     def crcVerify(self,frame):
-        data = frame[1:-1]
+        data = frame[1:]
         crc.calculate(data)
         if(crc.result() == 0):
             return True
@@ -191,6 +194,15 @@ def main(options):
                 
                 if(decoder.event_log_level == "START"):
                     start_log_time = time.perf_counter()
+                elif (decoder.event_log_level == "CRC"):
+                    log_consol = (log_time, 
+                                    mcu_log_time, 
+                                    decoder.event_module, 
+                                    decoder.event_line, 
+                                    decoder.event_log_level,
+                                    '--> ' + decoder.event_string)
+                    print (fmt % log_consol)
+                    logfile.write((fmt % log_consol) + "\n")
                 else:
                     if (log_ids.index(decoder.event_log_level) >= log_ids.index(options.loglevel)):
                         log_consol = (log_time, 
