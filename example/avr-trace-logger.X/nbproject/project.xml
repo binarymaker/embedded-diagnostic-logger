@@ -18,6 +18,7 @@
                 <sourceRootElem>.</sourceRootElem>
                 <sourceRootElem>../../source</sourceRootElem>
                 <sourceRootElem>../../config</sourceRootElem>
+                <sourceRootElem>../../library/embclib/source/crc8-ccitt</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

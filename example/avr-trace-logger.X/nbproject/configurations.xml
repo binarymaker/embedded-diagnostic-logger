@@ -47,6 +47,8 @@
       <itemPath>../../source/log.c</itemPath>
       <itemPath>../../source/log.h</itemPath>
       <itemPath>../../config/log-cfg.h</itemPath>
+      <itemPath>../../library/embclib/source/crc8-ccitt/crc8-ccitt.c</itemPath>
+      <itemPath>../../library/embclib/source/crc8-ccitt/crc8-ccitt.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -60,6 +62,7 @@
     <Elem>.</Elem>
     <Elem>../../source</Elem>
     <Elem>../../config</Elem>
+    <Elem>../../library/embclib/source/crc8-ccitt</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -172,7 +175,7 @@
       </AVR-GCC>
       <AVR-Global>
         <property key="common-include-directories"
-                  value=".;..\..\library\avr-atmega-driver\source;..\..\library\embclib\source;..\..\library\embclib\source\stdint;..\..\library\embclib\source\utils;..\..\config;..\..\source;..\..\config\config-avr-atmage-driver;..\..\config\config-embclib"/>
+                  value=".;..\..\library\avr-atmega-driver\source;..\..\library\embclib\source;..\..\library\embclib\source\stdint;..\..\library\embclib\source\utils;..\..\config;..\..\source;..\..\config\config-avr-atmage-driver;..\..\config\config-embclib;..\..\library\embclib\source\crc8-ccitt"/>
         <property key="eep" value="false"/>
         <property key="external-ram-check" value="false"/>
         <property key="hex" value="true"/>

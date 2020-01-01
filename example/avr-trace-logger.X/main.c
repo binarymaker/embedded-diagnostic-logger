@@ -41,9 +41,8 @@ main(void)
   {
     LOG_Trace(Super_loop_EVENT);
     LOG_Info(Enter_loop_EVENT);
-    LOG_Debug(System_timestamp_EVENT, LOG_DATA_32, SYSTIMER_Millis());
     LOG_Warning(count_value_is_multiple_of_5_EVENT, (count_u8%5 == 0));
-    LOG_Error(count_value_is_multiple_of_10_EVENT, LOG_DATA_8, count_u8, (count_u8%10 == 0));
+    LOG_Error(count_value_is_multiple_of_10_EVENT, LOG_DATA_8, &count_u8, (count_u8%10 == 0));
     LOG_Fatal(Counter_overflow_EVENT, count_u8 % 100 == 0);
     count_u8++;
     DELAY_sec(1);
