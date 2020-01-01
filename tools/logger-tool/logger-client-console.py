@@ -61,10 +61,10 @@ class frame:
             raw_frame[1] == log_ids.index("WARN")  or
             raw_frame[1] == log_ids.index("FATAL") or
             raw_frame[1] == log_ids.index("START")):
-            return 6
+            return 5
         if (raw_frame[1] == log_ids.index("DEBUG") or
             raw_frame[1] == log_ids.index("ERROR") ):
-            return 8
+            return 7
     
     def findDataLength(self, raw_frame):
         return ((raw_frame[self.DATATYPE] & 0x07) * raw_frame[self.DATA_LENGTH])
@@ -168,7 +168,7 @@ def main(options):
                 if (decoder.isFrameBegin(serial_raw_data) and len(serial_raw_data) == 2):
                     frame_length = decoder.findFrameLength(serial_raw_data)
                 
-                if(frame_length == 8 and len(serial_raw_data) == 6):
+                if(frame_length == 7 and len(serial_raw_data) == 6):
                     frame_length += decoder.findDataLength(serial_raw_data)
 
                 last_tick = time.perf_counter()
