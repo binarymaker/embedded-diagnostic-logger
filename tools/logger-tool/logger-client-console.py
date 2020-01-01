@@ -27,151 +27,208 @@ import time
 import datetime
 import json
 import colorama
+import crc8
+from optparse import OptionParser
+
+log_ids = ["TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "START"]
+crc = crc8.crc8()
+
+class frame:
+    LOG_ID = 1
+    MODULE_ID = 2
+    EVENT_ID = 3
+    DATATYPE = 4
+    DATA_LENGTH = 5
+    DATA = 6
+    CRC = 6
+    
+    list_of_frames = []
+    
+    def __init__(self):
+        with open('log_tokens.json') as f:
+            self.module_record = json.load(f)
+            self.is_decoded = True
+
+    def isFrameBegin(self, raw_frame):
+        if (raw_frame[0] == ord('#')):
+            return True
+        else:
+            return False
+
+    def findFrameLength(self, raw_frame):
+        if (raw_frame[1] == log_ids.index("TRACE") or
+            raw_frame[1] == log_ids.index("INFO")  or
+            raw_frame[1] == log_ids.index("WARN")  or
+            raw_frame[1] == log_ids.index("FATAL") or
+            raw_frame[1] == log_ids.index("START")):
+            return 6
+        if (raw_frame[1] == log_ids.index("DEBUG") or
+            raw_frame[1] == log_ids.index("ERROR") ):
+            return 8
+    
+    def findDataLength(self, raw_frame):
+        return ((raw_frame[self.DATATYPE] & 0x07) * raw_frame[self.DATA_LENGTH])
+
+    def catchFrame(self, line):
+        trunk_length = self.findFrameLength(line)
+        trunk_line = line[ : trunk_length]
+        del line[:trunk_length]
+        self.list_of_frames.append(trunk_line)
+
+    def moduleRecords(self, module_id, event_id):
+        for entry in self.module_record['log_strings']:
+            if module_id == entry['module_id'] and event_id == entry['fmt_id']:
+                self.event_module = entry['module_name']
+                self.event_line = entry['line']
+                self.event_string = entry['fmt_str']
+
+    def decode(self, frame):
+        if(self.crcVerify(frame)):
+            self.event_log_level = log_ids[frame[1]]
+            self.moduleRecords(frame[self.MODULE_ID], frame[self.EVENT_ID])
+            
+            if (frame[1] == log_ids.index("DEBUG") or
+                frame[1] == log_ids.index("ERROR") ):
+                self.debug_data = self.debug_data_extract(frame)
+            else:
+                self.debug_data = []
+        else:
+            print("CRC ERROR")
+
+    def debug_data_extract(self,frame):
+        data_bytes = frame[self.DATATYPE] & 0x07
+        data_length = frame[self.DATA_LENGTH]
+        data_array = []
+        for data_num in range(0, data_length):
+            data = 0
+            for byte_num in range(0, data_bytes):
+                data = data | frame[byte_num + (byte_num * data_num) + self.DATA] << (byte_num * 8)
+        data_array.append(data)
+        return (data_array)
+
+    def crcVerify(self,frame):
+        data = frame[1:-1]
+        crc.calculate(data)
+        if(crc.result() == 0):
+            return True
+        else:
+            return False
 
 colorama.init()
 
-log_ids = ["TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL", "RESTART"]
-
-timestamp = datetime.datetime
-
-try:
-    ser = serial.Serial(
-        port='COM16',\
-        baudrate=9600,\
-        parity=serial.PARITY_NONE,\
-        stopbits=serial.STOPBITS_ONE,\
-        bytesize=serial.EIGHTBITS,\
-            timeout=0)
-except:
-    print ("Please check COM port ...")
-    ports = list(serial.tools.list_ports.comports())
-    for com in ports:
-        print (com)
-    
-    sys.exit(1)
-
-print("connected to: " + ser.portstr)
-
-with open('log_tokens.json') as f:
-    module_record = json.load(f)
-
-def json_record(module_id, event_id):
-    for entry in module_record['log_strings']:
-        if module_id == entry['module_id'] and event_id == entry['fmt_id']:
-            return entry['module_name'], entry['line'], entry['fmt_str'] 
-
-def unsign_to_sign(value, byte_size):
-    max_val = (1 << (byte_size * 8))
-    if (value > (max_val - 1) / 2):
-        return (max_val - value) * -1
-    return value
-
-lasttik = time.perf_counter()
-start_log_time = time.perf_counter()
-
-data_recevied = False
-data_collect = []
-data_frame = None
-logfile = open(timestamp.now().strftime('./logfiles/logfile_%H_%M_%S_%d_%m_%Y.log'), "w+") 
-
-fmt = '%-9s%8.3f %-8s%-4s%-6s%-32s'
-data_fmt = '%s%-1s'
-
-def frame_length(byte):
-    log_id = byte & 7
-    
-    if (log_id == log_ids.index("RESTART")):
-        return 3
-
-    if (log_id == log_ids.index("TRACE") or log_id == log_ids.index("INFO") or
-        log_id == log_ids.index("WARN") or log_id == log_ids.index("FATAL")):
-        return 3
-    
-    if (log_id == log_ids.index("DEBUG") or log_id == log_ids.index("ERROR")):
-        return 4
-
-def frame_extra_length(byte):
-    data_byte_size = byte & 7
-    return data_byte_size
-
-def frame_min_trunk_time(baudrate):
+def frame_gap_time(baudrate):
     delay = 1000/baudrate
     return (delay * 3.5)
 
-trunk = False
-req_length = 40
-while True:
+def main(options):
+    global log_ids
+
+    try:
+        ser = serial.Serial(
+            port=options.port,\
+            baudrate=options.baudrate,\
+            parity=serial.PARITY_NONE,\
+            stopbits=serial.STOPBITS_ONE,\
+            bytesize=serial.EIGHTBITS,\
+                timeout=0)
+    except:
+        print ("Please check COM port ...")
+        ports = list(serial.tools.list_ports.comports())
+        for com in ports:
+            print (com)
+        
+        sys.exit(1)
+
+    print("connected to: " + ser.portstr, "Log level: " + options.loglevel)
+
+    timestamp = datetime.datetime 
+    logfile = open(timestamp.now().strftime('./logfiles/logfile_%Y_%m_%d_%H_%M_%S_.log'), "w+")
     
-    for line in ser.read():
-        if (data_recevied == False):
-          req_length = frame_length(line)
-          
-        data_recevied = True
-        data_collect.append(line)
-        
-        if (len(data_collect) >= req_length):
-            
-            if req_length > 4:
-                trunk = True
-                break
-            if req_length == 3:
-                trunk = True
-                break
-            if req_length == 4:
-                req_length += frame_extra_length(line)
+    logfile.write("Log level: " + options.loglevel + "\n")
+    serial_raw_data = []
+    serial_data = None
+    data_count = 0
 
-        lasttik = time.perf_counter()
-        
-    if (((time.perf_counter() - lasttik) > (frame_min_trunk_time(ser.baudrate)) and (data_recevied == True)) or (trunk == True)):
-        data_recevied = False
-        trunk = False
-        data_frame = data_collect
-        data_collect = []
-        
-    if data_frame is not None:
+    last_tick = time.perf_counter()
+    start_log_time = time.perf_counter()
+    frame_length = 255
     
-        mcu_log_time = time.perf_counter() - start_log_time
+    start_log_time = time.perf_counter() 
 
-        log_id = data_frame[0] & 7
-        log_id_str = log_ids[log_id]
+    fmt = '%-9s%8.3f %-8s%-4s%-6s%-32s'
+    data_fmt = '%s%-1s'
 
-        log_time = timestamp.now().strftime("%H:%M:%S")
-        
-        if(log_id == log_ids.index("RESTART")):
-            start_log_time = time.perf_counter()
-        else:
-            module_str, line_no, event_str = json_record(data_frame[1],data_frame[2])
-            log_consol = (log_time, mcu_log_time, module_str, line_no, log_id_str,'--> ' + event_str )
+    decoder = frame()
+    
+    try:
+        while True:
+            for data in ser.read():
+                serial_raw_data.append(data)
 
-        if (log_id == log_ids.index("TRACE") or log_id == log_ids.index("INFO") or
-            log_id == log_ids.index("WARN") or log_id == log_ids.index("FATAL")):
+                if (decoder.isFrameBegin(serial_raw_data) and len(serial_raw_data) == 2):
+                    frame_length = decoder.findFrameLength(serial_raw_data)
+                
+                if(frame_length == 8 and len(serial_raw_data) == 6):
+                    frame_length += decoder.findDataLength(serial_raw_data)
+
+                last_tick = time.perf_counter()
+
+            if((((time.perf_counter() - last_tick) > 0.5) and 
+                len(serial_raw_data) > 0) 
+                or
+                ((frame_length == len(serial_raw_data)))):
+
+                last_tick = time.perf_counter()
+                serial_data = serial_raw_data
+                serial_raw_data = []
+                new_data = False
             
-            print (fmt % log_consol)
-            logfile.write((fmt % log_consol) + "\n")
-        
-        if (log_id == log_ids.index("DEBUG") or log_id == log_ids.index("ERROR")):
-            data_length = ((data_frame[0] >> 3) & 31 ) + 1
-            data_bytes = (data_frame[3] & 7)
-            data_sign  = (data_frame[3] >> 4) & 1
-            data_hex   = (data_frame[3] >> 7) & 1
-            data_char  = (data_frame[3] >> 6) & 1
-            
-            dataArray = []
-            for data_num in range(0, data_length):
-                data = 0
-                for byte_num in range(0, data_bytes):
-                    data = data | data_frame[byte_num + (byte_num * data_num) + 4] << (byte_num * 8)
-                if data_sign:
-                    data = unsign_to_sign(data, data_bytes)
-                if data_hex:
-                    data = hex(data)
-                if data_char:
-                    data = chr(data)
-                dataArray.append(data)
-            print (fmt % (log_consol), dataArray)
-            logfile.write(data_fmt % (fmt % (log_consol) ,dataArray) + '\n')
+            if(serial_data is not None):
+                mcu_log_time = time.perf_counter() - start_log_time
 
-        data_frame = None
+                log_time = timestamp.now().strftime("%H:%M:%S")
+                decoder.decode(serial_data)
+                
+                if(decoder.event_log_level == "START"):
+                    start_log_time = time.perf_counter()
+                else:
+                    if (log_ids.index(decoder.event_log_level) >= log_ids.index(options.loglevel)):
+                        log_consol = (log_time, 
+                                        mcu_log_time, 
+                                        decoder.event_module, 
+                                        decoder.event_line, 
+                                        decoder.event_log_level,
+                                        '--> ' + decoder.event_string)
+
+                        if(len(decoder.debug_data) == 0):
+                            print (fmt % log_consol)
+                            logfile.write((fmt % log_consol) + "\n")
+                        else:
+                            print (fmt % (log_consol), decoder.debug_data)
+                            logfile.write(data_fmt % (fmt % (log_consol) ,decoder.debug_data) + '\n')
+
+                serial_data = None
+
+    except KeyboardInterrupt:
+        ser.close()
+        logfile.close()
+
+if __name__ == "__main__":
+    parser = OptionParser("usage: --com <COM_ID> --baud <9600> --level <TRACE>")
+    parser.add_option("-c", "--com",   dest="port",     help="serial port")
+    parser.add_option("-b", "--baud",  dest="baudrate", help="baudrate", default="9600")
+    parser.add_option("-l", "--level",  dest="loglevel", help="loglevel", default="TRACE")
+
+     # Parse options and arguments
+    options, args = parser.parse_args()
+
+    if not options.port:
+        parser.error("com port required")
+    
+    if options.loglevel not in log_ids:
+        print("log levels tags:", log_ids)
+        parser.error("correct log level tags required")
         
-logfile.close()
-ser.close()
+    main(options)
+    print("*"*20)
+    print("log application closed")
