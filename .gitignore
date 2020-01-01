@@ -1,36 +1,23 @@
+/*
+!/.gitignore
+!/.travis.yml
+!/codecov.yml
+!/README.md
+!/config
+!/source
+!/tools
+
 *.log
 
-/docs/*
-!/docs/diagrams/
+# Ceedling test case
+!/test/
+/test/*
+!/test/unit-test/
+/test/unit-test/*
+!/test/unit-test/test*/
 
-### MPLABX ###
-*.d
-*.pre
-*.p1
-*.lst
-*.sym
-*.obj
-*.o
-*.sdb
-*.obj.dmp
-**/html/
-**/nbproject/private/
-**/nbproject/Package-*.bash
-**/build/
-**/nbbuild/
-**/dist/
-**/nbdist/
-**/nbactions.xml
-**/nb-configuration.xml
-**/funclist
-**/nbproject/Makefile-*
-**/disassembly/
-*.map
-
-### proteuse ###
-*.workspace
-*.pdsbak
-*.pdsbak
+# Ceedling build directory
+test/**/build/
 
 ### log tool files ###
 **/log_modules.h
