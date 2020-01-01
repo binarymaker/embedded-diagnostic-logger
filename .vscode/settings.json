@@ -1,9 +1,0 @@
-{
-  "files.associations": {
-    "*.log": "log",
-    "mcu.h": "c",
-    "log.h": "c",
-    "crc8-ccitt.h": "c",
-    "log-cfg.h": "c"
-  }
-}
