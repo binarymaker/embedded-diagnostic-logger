@@ -43,6 +43,10 @@
         <itemPath>../../library/embclib/source/utils/utils.c</itemPath>
         <itemPath>../../library/embclib/source/utils/utils.h</itemPath>
       </logicalFolder>
+      <logicalFolder name="f3" displayName="logger" projectFiles="true">
+        <itemPath>../../../atmega-driver/library/logger/source/log.c</itemPath>
+        <itemPath>../../../atmega-driver/library/logger/source/log.h</itemPath>
+      </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>../../source/log.c</itemPath>
       <itemPath>../../source/log.h</itemPath>
@@ -63,6 +67,7 @@
     <Elem>../../source</Elem>
     <Elem>../../config</Elem>
     <Elem>../../library/embclib/source/crc8-ccitt</Elem>
+    <Elem>../../../atmega-driver/library/logger/source</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
